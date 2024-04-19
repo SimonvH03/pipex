@@ -1,6 +1,6 @@
-n = #commands
+n = '#commands'
 
-parent
+parent ()
 {
 	int	infile;
 	int	fds[2];
