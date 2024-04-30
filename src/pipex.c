@@ -3,25 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: simon <simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 17:51:14 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/04/19 21:41:59 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/04/30 20:06:59 by simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
 
 void
-	forking(
+	init(
+		int	*file_fds,
+		int	*pipe_fds,
+		int argc,
+		char **argv)
+{
+	if (argc < 5)
+		error_exit(ERR_ARGS, -1);
+	if (pipe(pipe_fds) == -1)
+		error_exit(ERR_PIPE, -1);
+	file_fds[0] = open(argv[argc - 1], O_RDONLY);
+	if (file_fds[0] == -1)
+		error_exit(ERR_OPEN, -1);
+	file_fds[1] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND);
+	if (file_fds[1] == -1)
+		error_exit(ERR_OPEN, -1);
+}
+
+void
+	forked_process(
+		pid_t pid,
 		int input,
-		int output)
+		int output,
+		char *argument,
+		char **envp)
 {
 	dup2(input, STDIN_FILENO);
 	close(input);
 	dup2(output, STDOUT_FILENO);
 	close(output);
-	
+	execute(pid, argument, envp);
 }
 
 int
@@ -30,22 +52,19 @@ int
 		char **argv,
 		char **envp)
 {
-	int	i;
-	int	infile;
-	int	outfile;
-	int	fds[2];
-	int	pid;
+	pid_t	pid;
+	int		file_fds[2];
+	int		pipe_fds[2];
 
-	if (argc < 5)
-		return (EXIT_FAILURE);
-	if (pipe(fds) == -1)
-		return (EXIT_FAILURE);
-	infile = open(argv[argc - 1], O_RDONLY);
-	outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND);
+	init(file_fds, pipe_fds, argc, argv);
 	pid = fork();
 	if (pid == 0)
-		forking(infile, fds[1]);
+		forked_process(pid,
+			file_fds[0], pipe_fds[1],
+			argv[2], envp);
 	else
-		forking(fds[0], outfile);
-	return (0);
+		forked_process(pid,
+			pipe_fds[0], file_fds[1],
+			argv[2], envp);
+	error_exit(ERR_EXIT, pid);
 }
