@@ -6,7 +6,7 @@
 /*   By: simon <simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 17:51:14 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/04/30 22:36:13 by simon            ###   ########.fr       */
+/*   Updated: 2024/05/01 00:04:31 by simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,14 @@ void
 }
 
 void
-	forked_process(
-		pid_t pid,
+	set_input_output(
 		int input,
-		int output,
-		char *argument,
-		char **envp)
+		int output)
 {
 	dup2(input, STDIN_FILENO);
 	close(input);
 	dup2(output, STDOUT_FILENO);
 	close(output);
-	execute(pid, argument, envp);
 }
 
 int
@@ -59,12 +55,15 @@ int
 	init(file_fds, pipe_fds, argc, argv);
 	pid = fork();
 	if (pid == 0)
-		forked_process(pid,
-			file_fds[0], pipe_fds[1],
-			argv[2], envp);
+	{
+		set_input_output(file_fds[0], pipe_fds[1]);
+		execute(pid, argv[2], envp);
+	}
 	else
-		forked_process(pid,
-			pipe_fds[0], file_fds[1],
-			argv[2], envp);
+	{
+		close(pipe_fds[1]);
+		set_input_output(pipe_fds[0], file_fds[1]);
+		execute(pid, argv[3], envp);
+	}
 	error_exit(pid, ERR_EXIT);
 }

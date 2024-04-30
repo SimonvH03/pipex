@@ -6,7 +6,7 @@
 /*   By: simon <simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 17:51:43 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/04/30 22:24:00 by simon            ###   ########.fr       */
+/*   Updated: 2024/04/30 23:24:45 by simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PIPEX_H
 # include "libft/libft.h"
 # include "stdio.h"
+# include "wait.h"
 
 # define ERR_OPEN	"Open"
 # define ERR_CLOSE	"Close"

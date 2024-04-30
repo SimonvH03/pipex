@@ -25,10 +25,10 @@ $(NAME): $(OBJS) $(LIBS)
 	$(CC) $(OBJS) $(LIBS) -o $(NAME)
 
 clean:
-	make -C $(LFTDIR) clean
 	rm -rf $(OBJS)
 
 fclean: clean
+	make -C $(LFTDIR) fclean
 	rm -rf $(NAME)
 
 re: clean all

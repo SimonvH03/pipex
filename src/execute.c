@@ -6,7 +6,7 @@
 /*   By: simon <simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 19:25:26 by simon             #+#    #+#             */
-/*   Updated: 2024/04/30 22:35:55 by simon            ###   ########.fr       */
+/*   Updated: 2024/04/30 23:56:27 by simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,19 @@ char	*
 	i = 0;
 	while (ft_strnstr(envp[i], "PATH", 4) == NULL)
 		i++;
-	ft_printf("%s\n", envp[i]);
+	all_paths = ft_split(envp[i] + 5, ':');
+	if (all_paths == NULL)
+		return (NULL);
+	i = 0;
+	while (all_paths[i] != NULL)
+	{
+		path = ft_strjoin_d(all_paths[i], command, '/');
+		if (access(path, F_OK) == 0)
+			return (path);
+		free(path);
+		i++;
+	}
+	// sfree_array((void **)all_paths, sizeof (char *));
 	return (NULL);
 }
 
@@ -34,17 +46,17 @@ void
 		char *argument,
 		char **envp)
 {
-	char	**command;
+	char	**full_command;
 	char	*path;
 
-	command = ft_split(argument, ' ');
-	if (command == NULL)
+	full_command = ft_split(argument, ' ');
+	if (full_command == NULL)
 		error_exit(pid, ERR_MALLOC);
-	path = select_path(command[0], envp);
+	path = select_path(full_command[0], envp);
 	if (path == NULL)
 	{
-		sfree_array((void **)command, sizeof(char *));
+		// sfree_array((void **)full_command, sizeof(char *));
 		error_exit(pid, ERR_PATH);
 	}
-	execve(path, command, envp);
+	execve(path, full_command, envp);
 }

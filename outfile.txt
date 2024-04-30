@@ -1,2 +1,1 @@
-PATH=/home/simon/.local/bin:/home/simon/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin
-Error:	pid 14386:	Failed to find Path
+      7       7      55
