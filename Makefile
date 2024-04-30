@@ -1,4 +1,4 @@
-NAME	= fdf
+NAME	= pipex
 # CFLAGS	= -Wall -Werror -Wextra
 CFLAGS	= -g
 
@@ -7,8 +7,9 @@ LIBFT	= $(LFTDIR)/libft.a
 
 LIBS	= $(LIBFT)
 SRCDIR	= ./src
-SRC		=	$(SRCDIR)/ \
-			$(SRCDIR)/
+SRC		=	$(SRCDIR)/execute.c \
+			$(SRCDIR)/pipex.c \
+			$(SRCDIR)/utils.c
 
 OBJS	= ${SRC:.c=.o}
 

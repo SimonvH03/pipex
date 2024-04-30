@@ -6,7 +6,7 @@
 /*   By: simon <simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 17:51:14 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/04/30 20:06:59 by simon            ###   ########.fr       */
+/*   Updated: 2024/04/30 22:36:13 by simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,15 @@ void
 		char **argv)
 {
 	if (argc < 5)
-		error_exit(ERR_ARGS, -1);
+		error_exit(-1, ERR_ARGS);
 	if (pipe(pipe_fds) == -1)
-		error_exit(ERR_PIPE, -1);
-	file_fds[0] = open(argv[argc - 1], O_RDONLY);
+		error_exit(-1, ERR_PIPE);
+	file_fds[0] = open(argv[1], O_RDONLY);
 	if (file_fds[0] == -1)
-		error_exit(ERR_OPEN, -1);
-	file_fds[1] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND);
+		error_exit(-1, ERR_OPEN);
+	file_fds[1] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (file_fds[1] == -1)
-		error_exit(ERR_OPEN, -1);
+		error_exit(-1, ERR_OPEN);
 }
 
 void
@@ -66,5 +66,5 @@ int
 		forked_process(pid,
 			pipe_fds[0], file_fds[1],
 			argv[2], envp);
-	error_exit(ERR_EXIT, pid);
+	error_exit(pid, ERR_EXIT);
 }

@@ -6,7 +6,7 @@
 /*   By: simon <simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 17:51:43 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/04/30 20:11:33 by simon            ###   ########.fr       */
+/*   Updated: 2024/04/30 22:24:00 by simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,6 @@
 
 void	execute(pid_t pid, char *argument, char **envp);
 void	error_exit(pid_t pid, char *error_message);
+void	sfree_array(void **array, size_t ptr_size);
 
 #endif
