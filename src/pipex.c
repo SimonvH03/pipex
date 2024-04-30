@@ -6,13 +6,13 @@
 /*   By: simon <simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 17:51:14 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/05/01 00:04:31 by simon            ###   ########.fr       */
+/*   Updated: 2024/05/01 00:17:58 by simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
 
-void
+static void
 	init(
 		int	*file_fds,
 		int	*pipe_fds,
@@ -31,7 +31,8 @@ void
 		error_exit(-1, ERR_OPEN);
 }
 
-void
+// this function should be redesigned to close all unnessecary fds too
+static void
 	set_input_output(
 		int input,
 		int output)

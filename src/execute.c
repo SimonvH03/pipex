@@ -6,13 +6,13 @@
 /*   By: simon <simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 19:25:26 by simon             #+#    #+#             */
-/*   Updated: 2024/04/30 23:56:27 by simon            ###   ########.fr       */
+/*   Updated: 2024/05/01 00:17:11 by simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
 
-char	*
+static char	*
 	select_path(
 		char *command,
 		char **envp)
