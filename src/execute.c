@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: simon <simon@student.42.fr>                +#+  +:+       +#+        */
+/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 19:25:26 by simon             #+#    #+#             */
-/*   Updated: 2024/05/01 00:17:11 by simon            ###   ########.fr       */
+/*   Updated: 2024/05/01 21:18:33 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,12 @@ static char	*
 		free(path);
 		i++;
 	}
-	// sfree_array((void **)all_paths, sizeof (char *));
+	free_array((void **)all_paths);
 	return (NULL);
 }
 
 void
 	execute(
-		pid_t pid,
 		char *argument,
 		char **envp)
 {
@@ -51,12 +50,13 @@ void
 
 	full_command = ft_split(argument, ' ');
 	if (full_command == NULL)
-		error_exit(pid, ERR_MALLOC);
+		error_exit(ERR_MALLOC);
 	path = select_path(full_command[0], envp);
 	if (path == NULL)
 	{
-		// sfree_array((void **)full_command, sizeof(char *));
-		error_exit(pid, ERR_PATH);
+		ft_printf("%s:\t", argument);
+		free_array((void **)full_command);
+		error_exit(ERR_PATH);
 	}
 	execve(path, full_command, envp);
 }

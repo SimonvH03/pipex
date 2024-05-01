@@ -61,3 +61,64 @@ child (n)
 (STDIN_FILENO)	0	pipe_read
 (STDOUT_FILENO)	1	STDOUT
 (STDERR_FILENO)	2	STDERR
+
+read*
+write*
+
+int	temp[2];
+
+{
+pipe(temp);
+write[0] = temp[1];
+read[1] = temp[0];
+
+fork()
+
+close(write[0]);
+read[current] = read[!current];
+
+pipe1[0] pipe1[1]
+pipe2[0] pipe2[1]
+
+read[0] write[0]
+read[1] write[1]
+
+pipes[0][0] pipes[0][1]
+pipes[1][0] pipes[1][1]
+
+pipe[0] pipe[1]
+}
+
+parent
+{
+	pipe(A)
+	A {0, 1}
+	0	infile
+	1	A
+	pid = fork_child(infile, A)
+	while(args)
+	{
+		pipe(B)
+		B {0, 1}
+		pid = fork_child(A, B)
+		{
+			0	A
+			1	B
+			execute() (closes output);
+		}
+		close(A0)
+		close(B1)
+	}
+	{
+		pipe(C)
+		C {0, 1}
+		pid = fork_child(B, C)
+		{
+			0	B
+			1	C
+			execute() (closes output);
+		}
+		close(B0)
+		close(C1)
+	}
+}

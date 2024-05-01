@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: simon <simon@student.42.fr>                +#+  +:+       +#+        */
+/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 18:30:02 by simon             #+#    #+#             */
-/*   Updated: 2024/04/30 21:56:37 by simon            ###   ########.fr       */
+/*   Updated: 2024/05/01 21:22:06 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,31 @@
 
 void
 	error_exit(
-		pid_t pid,
 		char *error_message)
 {
-	ft_printf("Error:\tpid %d:\t%s\n", pid, error_message);
+	ft_printf("Error:\t%s\n", error_message);
 	exit(EXIT_FAILURE);
 }
 
 void
-	sfree_array(
-		void **array,
-		size_t ptr_size)
+	free_array(
+		void **array)
 {
 	int	i;
 
 	i = 0;
-	while(*(array + (ptr_size * i)) != NULL)
-	{
-		free(*(array + (ptr_size * i)));
-		i++;
-	}
+	while(array[i] != NULL)
+		free(array[i++]);
 	free(array);
+}
+
+void
+	ft_close(
+		int *fd)
+{
+	if (*fd < 0)
+		error_exit(ERR_CLOSE);
+	if (close(*fd) == -1)
+		error_exit(ERR_CLOSE);
+	*fd = -1;
 }
