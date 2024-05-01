@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 17:51:14 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/05/01 21:37:11 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/05/01 21:49:57 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,21 +97,21 @@ int
 	if (file_fds[0] == -1)
 		error_exit(ERR_OPEN);
 	file_fds[1] = -1;
-	pid = fork_them_kids(file_fds, pipe_fds[curr], argv[2], envp);
-	ft_close(&file_fds[0]);
 	i = 2;
+	pid = fork_them_kids(file_fds, pipe_fds[curr], argv[i], envp);
+	ft_close(&file_fds[0]);
 	while (i < argc - 3)
 	{
-		curr = !curr;
-		pipe(pipe_fds[curr]);
-		pid = fork_them_kids(pipe_fds[!curr], pipe_fds[curr], argv[i], envp);
 		i++;
+		pipe(pipe_fds[!curr]);
+		pid = fork_them_kids(pipe_fds[curr], pipe_fds[!curr], argv[i], envp);
+		curr = !curr;
 	}
 	open_outfile(file_fds, argv[argc-1]);
 	pid = fork_them_kids(pipe_fds[curr], file_fds, argv[argc-2], envp);
-	// waitpid(pid, &status, 0);
-	// wait(&status);
-	// if (WIFEXITED(status))
-	// 	return (WEXITSTATUS(status));
+	while (i-- > 2)
+		wait(&status);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
 	return (EXIT_FAILURE);
 }

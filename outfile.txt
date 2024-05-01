@@ -1,1 +1,7 @@
-      7       7      55
+libft
+Makefile
+outfile.txt
+pipex
+pipex.h
+src
+textfiles

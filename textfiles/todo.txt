@@ -1,9 +1,3 @@
-Error handling
-	- find out what errors need to be displayed
-	- probably make ft_printf_fd
-	- free all arrays (settle for char * or fix sfree_array)
-	- close all fds
+Display errors like Bash
 
-Fd handling
-	- Close all fds that are no longer used immediately
-	- figure out if possible how to use 1 Pipe for more than two processes
+Close all fds
