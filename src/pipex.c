@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: simon <simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 17:51:14 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/05/01 21:49:57 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/05/02 18:20:16 by simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@
 // 	file_fds[1] = -1;
 // }
 
-static void
-	open_outfile(
-		int	*file_fds,
-		char *outfile)
-{
-	file_fds[1] = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	if (file_fds[1] == -1)
-		error_exit(ERR_OPEN);
-}
+// static void
+// 	open_outfile(
+// 		int	*file_fds,
+// 		char *outfile)
+// {
+// 	file_fds[1] = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+// 	if (file_fds[1] == -1)
+// 		error_exit(ERR_OPEN);
+// }
 
 // closes unused fds, then sets output and input to STD_FILENO
 static void
@@ -70,6 +70,7 @@ pid_t
 	{
 		handle_fds(input_fds, output_fds);
 		execute(command, envp);
+		error_exit(ERR_EXIT);
 	}
 	return (pid);
 }
@@ -100,14 +101,15 @@ int
 	i = 2;
 	pid = fork_them_kids(file_fds, pipe_fds[curr], argv[i], envp);
 	ft_close(&file_fds[0]);
-	while (i < argc - 3)
+	while (i++ < argc - 3)
 	{
-		i++;
 		pipe(pipe_fds[!curr]);
 		pid = fork_them_kids(pipe_fds[curr], pipe_fds[!curr], argv[i], envp);
 		curr = !curr;
 	}
-	open_outfile(file_fds, argv[argc-1]);
+	file_fds[1] = open(argv[argc-1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	if (file_fds[1] == -1)
+		error_exit(ERR_OPEN);
 	pid = fork_them_kids(pipe_fds[curr], file_fds, argv[argc-2], envp);
 	while (i-- > 2)
 		wait(&status);
