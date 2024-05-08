@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 18:30:02 by simon             #+#    #+#             */
-/*   Updated: 2024/05/01 21:22:06 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/05/08 18:34:27 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void
 	int	i;
 
 	i = 0;
-	while(array[i] != NULL)
+	while (array[i] != NULL)
 		free(array[i++]);
 	free(array);
 }
