@@ -1,5 +1,3 @@
 Display errors like Bash
 
-Close all fds
-
 Waitpid needs to store &status the 'last' process' status

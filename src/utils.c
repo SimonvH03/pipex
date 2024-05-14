@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: simon <simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 18:30:02 by simon             #+#    #+#             */
-/*   Updated: 2024/05/08 18:34:27 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:12:01 by simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void
 	ft_close(
 		int *fd)
 {
-	if (*fd < 0)
-		error_exit(ERR_CLOSE);
+	if (*fd == -1)
+		return ;
 	if (close(*fd) == -1)
 		error_exit(ERR_CLOSE);
 	*fd = -1;

@@ -1,0 +1,4 @@
+*.o
+infile.txt
+outfile.txt
+todo.txt
