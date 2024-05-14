@@ -1,3 +1,0 @@
-Display errors like Bash
-
-Waitpid needs to store &status the 'last' process' status
