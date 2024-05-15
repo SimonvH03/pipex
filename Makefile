@@ -9,7 +9,7 @@ LIBS	= $(LIBFT)
 
 SRCDIR	= ./src
 SRC		=	$(SRCDIR)/execute.c \
-			$(SRCDIR)/pipex.c \
+			$(SRCDIR)/pipex2.c \
 			$(SRCDIR)/utils.c
 
 OBJS	= ${SRC:.c=.o}
