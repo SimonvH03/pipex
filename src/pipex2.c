@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 17:51:14 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/05/15 19:49:57 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/05/15 21:22:23 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,31 +33,57 @@ static void
 }
 
 pid_t
-	fork_them_kids(
+	child_file(
+		int *input_fds,
+		int *output_fds,
 		char *command,
 		char **envp)
 {
 	pid_t	pid;
 
+	dup2(input_fds[0], STDIN_FILENO);
+	ft_close(&input_fds[0]);
+
+	dup2(output_fds[1], STDOUT_FILENO);
+	ft_close(&output_fds[1]);
+
 	pid = fork();
 	if (pid == 0)
 	{
+		ft_close(&output_fds[0]);
 		execute(command, envp);
-		error_exit(ERR_EXIT);
+	}
+
+	return (pid);
+
+}
+
+pid_t
+	child_pipe(
+		int *input_fds,
+		int *output_fds,
+		char *command,
+		char **envp)
+{
+	pid_t	pid;
+
+	dup2(input_fds[0], STDIN_FILENO);
+	ft_close(&input_fds[0]);
+	if (pipe(output_fds) == -1)
+		error_exit(ERR_PIPE);
+	dup2(output_fds[1], STDOUT_FILENO);
+	ft_close(&output_fds[1]);
+	pid = fork();
+	if (pid == 0)
+	{
+		ft_close(&output_fds[0]);
+		execute(command, envp);
 	}
 	return (pid);
 }
 
-static void
-	set_fds(
-		int *input,
-		int *output)
-{
-	dup2(input[0], STDIN_FILENO);
-	ft_close(&input[0]);
-	dup2(output[1], STDOUT_FILENO);
-	ft_close(&output[1]);
-}
+void
+	
 
 int
 	main(
@@ -73,49 +99,16 @@ int
 
 	if (argc < 5)
 		error_exit(ERR_ARGS);
-	if (pipe(pipe_fds) == -1)
-		error_exit(ERR_PIPE);
 	open_infile(inout_fds, argv[1]);
-
 	i = 2;
-	set_fds(inout_fds, pipe_fds);
-	pid = fork();
-	if (pid == 0)
-	{
-		ft_close(&pipe_fds[0]);
-		execute(argv[i], envp);
-	}
-
+	pid = child_pipe(inout_fds, pipe_fds, argv[i], envp);
 	ft_close(&inout_fds[0]);
-
 	while (i++ < argc - 3)
 	{
-		dup2(pipe_fds[0], STDIN_FILENO);
-		ft_close(&pipe_fds[0]);
-
-		pipe(pipe_fds);
-
-		dup2(pipe_fds[1], STDOUT_FILENO);
-		ft_close(&pipe_fds[1]);
-
-		pid = fork();
-		if (pid == 0)
-		{
-			ft_close(&pipe_fds[0]);
-			execute(argv[i], envp);
-		}
+		pid = child_pipe(pipe_fds, pipe_fds, argv[i], envp);
 	}
-
 	open_outfile(inout_fds, argv[argc - 1]);
-
-	set_fds(pipe_fds, inout_fds);
-	pid = fork();
-	if (pid == 0)
-	{
-		ft_close(&inout_fds[0]);
-		execute(argv[i], envp);
-	}
-
+	pid = child_file(pipe_fds, inout_fds, argv[argc - 2], envp);
 	ft_close(&inout_fds[1]);
 
 	waitpid(pid, &status, 0);
