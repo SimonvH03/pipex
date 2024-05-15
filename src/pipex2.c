@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: simon <simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 17:51:14 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/05/15 21:22:23 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/05/15 23:34:27 by simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,19 +43,15 @@ pid_t
 
 	dup2(input_fds[0], STDIN_FILENO);
 	ft_close(&input_fds[0]);
-
 	dup2(output_fds[1], STDOUT_FILENO);
 	ft_close(&output_fds[1]);
-
 	pid = fork();
 	if (pid == 0)
 	{
 		ft_close(&output_fds[0]);
 		execute(command, envp);
 	}
-
 	return (pid);
-
 }
 
 pid_t
@@ -83,7 +79,18 @@ pid_t
 }
 
 void
-	
+	passing_time_until_a_specific_future_event_unfolds(
+		int pid,
+		int i)
+{
+	int	status;
+
+	waitpid(pid, &status, 0);
+	while (i-- >= 2)
+		wait(NULL);
+	if (WIFEXITED(status))
+		exit(WEXITSTATUS(status));
+}
 
 int
 	main(
@@ -94,7 +101,6 @@ int
 	pid_t	pid;
 	int		inout_fds[2];
 	int		pipe_fds[2];
-	int		status;
 	int		i;
 
 	if (argc < 5)
@@ -110,11 +116,6 @@ int
 	open_outfile(inout_fds, argv[argc - 1]);
 	pid = child_file(pipe_fds, inout_fds, argv[argc - 2], envp);
 	ft_close(&inout_fds[1]);
-
-	waitpid(pid, &status, 0);
-	while (i-- >= 2)
-		wait(NULL);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
+	passing_time_until_a_specific_future_event_unfolds(pid, i);
 	return (EXIT_FAILURE);
 }
