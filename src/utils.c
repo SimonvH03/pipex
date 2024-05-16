@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: simon <simon@student.42.fr>                +#+  +:+       +#+        */
+/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 18:30:02 by simon             #+#    #+#             */
-/*   Updated: 2024/05/14 15:12:01 by simon            ###   ########.fr       */
+/*   Updated: 2024/05/16 20:58:43 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,34 @@
 
 void
 	error_exit(
-		char *error_message)
+		int i)
 {
-	ft_printf("Error:\t%s\n", error_message);
-	exit(EXIT_FAILURE);
+	if (i > 0)
+		errno = i;
+	perror(NULL);
+	exit(errno);
 }
 
-void
-	free_array(
-		void **array)
+int
+	open_infile(
+		char *infile)
 {
-	int	i;
+	int	fd;
 
-	i = 0;
-	while (array[i] != NULL)
-		free(array[i++]);
-	free(array);
+	fd = open(infile, O_RDONLY);
+	if (fd == -1)
+		error_exit(0);
+	return (fd);
 }
 
-void
-	ft_close(
-		int *fd)
+int
+	open_outfile(
+		char *outfile)
 {
-	if (*fd == -1)
-		return ;
-	if (close(*fd) == -1)
-		error_exit(ERR_CLOSE);
-	*fd = -1;
+	int	fd;
+
+	fd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	if (fd == -1)
+		error_exit(0);
+	return (fd);
 }

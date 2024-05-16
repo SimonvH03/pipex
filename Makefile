@@ -1,6 +1,5 @@
 NAME	= pipex
-# CFLAGS	= -Wall -Werror -Wextra
-CFLAGS	= -g
+CFLAGS	= -Wall -Werror -Wextra
 
 LFTDIR	= ./libft
 LIBFT	= $(LFTDIR)/libft.a
@@ -9,7 +8,7 @@ LIBS	= $(LIBFT)
 
 SRCDIR	= ./src
 SRC		=	$(SRCDIR)/execute.c \
-			$(SRCDIR)/pipex2.c \
+			$(SRCDIR)/pipex.c \
 			$(SRCDIR)/utils.c
 
 OBJS	= ${SRC:.c=.o}
@@ -26,7 +25,6 @@ $(NAME): $(OBJS) $(LIBS)
 	$(CC) $(OBJS) $(LIBS) -o $(NAME)
 
 clean:
-	rm -rf outfile.txt
 	rm -rf $(OBJS)
 	make -C $(LFTDIR) clean -s
 
