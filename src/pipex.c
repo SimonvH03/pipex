@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 17:51:14 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/05/20 22:26:30 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/05/20 22:35:22 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,6 @@ int
 		input_fd = fork_them_kids(input_fd, argv[i], envp);
 	}
 	file_fd = open_outfile(argv[argc - 1]);
-	// dup2(STDERR_FILENO, STDOUT_FILENO);
-	// ft_printf("fds: %d %d\n", input_fd, file_fd);
 	pid = favourite_child(input_fd, file_fd, argv[argc - 2], envp);
 	zombie_prevention_protocol(pid, i);
 }
