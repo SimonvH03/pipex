@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 17:51:14 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/05/16 21:13:28 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/05/20 21:18:11 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,16 @@ static int
 	pid_t	pid;
 	int		pipe_fds[2];
 
-	dup2(input_fd, STDIN_FILENO);
-	close(input_fd);
+	if (dup2(input_fd, STDIN_FILENO) == -1)
+		error_exit(0, command);
+	if (close(input_fd) == -1)
+		error_exit(0, command);;
 	if (pipe(pipe_fds) == -1)
-		error_exit(0);
-	dup2(pipe_fds[1], STDOUT_FILENO);
-	close(pipe_fds[1]);
+		error_exit(0, command);
+	if (dup2(pipe_fds[1], STDOUT_FILENO) == -1)
+		error_exit(0, command);
+	if (close(pipe_fds[1]) == -1)
+		error_exit(0, command);;
 	pid = fork();
 	if (pid == 0)
 	{
@@ -48,12 +52,14 @@ static pid_t
 {
 	pid_t	pid;
 
-	ft_printf("input: %i\noutput: %i\n", input_fd, output_fd);
-	dup2(input_fd, STDIN_FILENO);
-	close(input_fd);
-	dup2(output_fd, STDOUT_FILENO);
-	close(output_fd);
-	ft_printf("input: %i\noutput: %i\n", input_fd, output_fd);
+	if (dup2(input_fd, STDIN_FILENO) == -1)
+		error_exit(0, command);
+	if (close(input_fd) == -1)
+		error_exit(0, command);;
+	if (dup2(output_fd, STDOUT_FILENO) == -1)
+		error_exit(0, command);
+	if (close(output_fd) == -1)
+		error_exit(0, command);;
 	pid = fork();
 	if (pid == 0)
 		execute(command, envp);
@@ -72,7 +78,7 @@ static void
 	{
 		while (i-- > 2)
 			if (wait(NULL) == -1)
-				error_exit(0);
+				error_exit(0, NULL);
 		exit(WEXITSTATUS(status));
 	}
 	exit(errno);
@@ -90,7 +96,7 @@ int
 	int		i;
 
 	if (argc < 5)
-		error_exit(EINVAL);
+		error_exit(EINVAL, NULL);
 	file_fd = open_infile(argv[1]);
 	input_fd = fork_them_kids(file_fd, argv[2], envp);
 	close(file_fd);
@@ -100,8 +106,6 @@ int
 		input_fd = fork_them_kids(input_fd, argv[i], envp);
 	}
 	file_fd = open_outfile(argv[argc - 1]);
-	// if (input_fd == file_fd)
-	// 	error_exit(5);
 	pid = favourite_child(input_fd, file_fd, argv[argc - 2], envp);
 	close(file_fd);
 	zombie_prevention_protocol(pid, i);

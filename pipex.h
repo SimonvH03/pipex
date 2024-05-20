@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 17:51:43 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/05/16 20:02:51 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:14:04 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,13 @@
 # include <stdbool.h>
 # include <wait.h>
 # include <errno.h>
+#include <string.h>
 
 // file: execute.c
-void	execute(char *argument, char **envp);
+void	execute(char *command, char **envp);
 
 // file: utils.c
-void	error_exit(int i);
+void	error_exit(int i, char *param);
 int		open_infile(char *infile);
 int		open_outfile(char *outfile);
 
