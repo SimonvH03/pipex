@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 17:51:14 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/05/20 21:18:11 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/05/20 22:26:30 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ static int
 	if (dup2(input_fd, STDIN_FILENO) == -1)
 		error_exit(0, command);
 	if (close(input_fd) == -1)
-		error_exit(0, command);;
+		error_exit(0, command);
 	if (pipe(pipe_fds) == -1)
 		error_exit(0, command);
 	if (dup2(pipe_fds[1], STDOUT_FILENO) == -1)
 		error_exit(0, command);
 	if (close(pipe_fds[1]) == -1)
-		error_exit(0, command);;
+		error_exit(0, command);
 	pid = fork();
 	if (pid == 0)
 	{
@@ -55,7 +55,7 @@ static pid_t
 	if (dup2(input_fd, STDIN_FILENO) == -1)
 		error_exit(0, command);
 	if (close(input_fd) == -1)
-		error_exit(0, command);;
+		error_exit(0, command);
 	if (dup2(output_fd, STDOUT_FILENO) == -1)
 		error_exit(0, command);
 	if (close(output_fd) == -1)
@@ -99,14 +99,14 @@ int
 		error_exit(EINVAL, NULL);
 	file_fd = open_infile(argv[1]);
 	input_fd = fork_them_kids(file_fd, argv[2], envp);
-	close(file_fd);
 	i = 2;
 	while (i++ < argc - 3)
 	{
 		input_fd = fork_them_kids(input_fd, argv[i], envp);
 	}
 	file_fd = open_outfile(argv[argc - 1]);
+	// dup2(STDERR_FILENO, STDOUT_FILENO);
+	// ft_printf("fds: %d %d\n", input_fd, file_fd);
 	pid = favourite_child(input_fd, file_fd, argv[argc - 2], envp);
-	close(file_fd);
 	zombie_prevention_protocol(pid, i);
 }

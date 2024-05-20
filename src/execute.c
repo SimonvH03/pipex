@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 19:25:26 by simon             #+#    #+#             */
-/*   Updated: 2024/05/20 21:22:33 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/05/20 22:02:09 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ static char	*
 		i++;
 	}
 	ft_free_ptr_array((void **)all_paths);
+	// if (path == NULL)
+	// 	path = ft_strdup("./");
 	return (path);
 }
 
@@ -56,6 +58,6 @@ void
 	path = select_path(full_command[0], envp);
 	if (path == NULL)
 		error_exit(127, command);
-	execve(path, full_command, envp);
-	error_exit(0, command);
+	if (execve(path, full_command, envp) == -1)
+		error_exit(0, command);
 }

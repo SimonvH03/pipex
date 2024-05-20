@@ -1,0 +1,11 @@
+infile.txt
+libft
+Makefile
+notes
+outfile.txt
+pipex
+pipex.h
+src
+test
+test.c
+todo.txt
