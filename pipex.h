@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: simon <simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 17:51:43 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/05/20 18:14:04 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/05/22 22:59:48 by simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	execute(char *command, char **envp);
 
 // file: utils.c
 void	error_exit(int i, char *param);
+void	set_input(int input_fd);
+void	set_output(int output_fd);
 int		open_infile(char *infile);
 int		open_outfile(char *outfile);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: simon <simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 18:30:02 by simon             #+#    #+#             */
-/*   Updated: 2024/05/20 22:05:16 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/05/22 22:59:34 by simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,26 @@ void
 	dup2(STDERR_FILENO, STDOUT_FILENO);
 	ft_printf("pipex: %s: %s\n", strerror(errno), param);
 	exit(errno);
+}
+
+void
+	set_input(
+		int input_fd)
+{
+	if (dup2(input_fd, STDIN_FILENO) == -1)
+		error_exit(0, NULL);
+	if (close(input_fd) == -1)
+		error_exit(0, NULL);
+}
+
+void
+	set_output(
+		int output_fd)
+{
+	if (dup2(output_fd, STDOUT_FILENO) == -1)
+		error_exit(0, NULL);
+	if (close(output_fd) == -1)
+		error_exit(0, NULL);
 }
 
 int
