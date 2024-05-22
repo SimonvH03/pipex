@@ -6,7 +6,7 @@
 /*   By: simon <simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 18:30:02 by simon             #+#    #+#             */
-/*   Updated: 2024/05/22 22:59:34 by simon            ###   ########.fr       */
+/*   Updated: 2024/05/22 23:33:45 by simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void
 		int i,
 		char *param)
 {
-	const char *nill = "\0";
+	const char	*nill = "\0";
 
 	if (i > 0)
 		errno = i;

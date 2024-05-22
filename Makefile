@@ -7,7 +7,8 @@ LIBFT	= $(LFTDIR)/libft.a
 LIBS	= $(LIBFT)
 
 SRCDIR	= ./src
-SRC		=	$(SRCDIR)/execute.c \
+SRC		=	$(SRCDIR)/fork_some.c \
+			$(SRCDIR)/execute.c \
 			$(SRCDIR)/pipex.c \
 			$(SRCDIR)/utils.c
 
