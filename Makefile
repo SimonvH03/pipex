@@ -20,7 +20,7 @@ $(LIBFT):
 	make -C $(LFTDIR) all
 
 %.o: %.c
-	$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
+	$(CC) $(CFLAGS) -c $< -o $@ $(HEADERS)
 
 $(NAME): $(OBJS) $(LIBS)
 	$(CC) $(OBJS) $(LIBS) -o $(NAME)
