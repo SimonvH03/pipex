@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fork_some.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: simon <simon@student.42.fr>                +#+  +:+       +#+        */
+/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 23:28:50 by simon             #+#    #+#             */
-/*   Updated: 2024/05/22 23:33:11 by simon            ###   ########.fr       */
+/*   Updated: 2024/06/03 21:05:50 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int
 	int		pipe_fds[2];
 
 	if (pipe(pipe_fds) == -1)
-		error_exit(0, command);
+		error_exit(errno, command);
 	set_output(pipe_fds[1]);
 	pid = fork();
 	if (pid == 0)
@@ -48,7 +48,7 @@ int
 
 	set_input(input_fd);
 	if (pipe(pipe_fds) == -1)
-		error_exit(0, command);
+		error_exit(errno, command);
 	set_output(pipe_fds[1]);
 	pid = fork();
 	if (pid == 0)

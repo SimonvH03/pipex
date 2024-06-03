@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: simon <simon@student.42.fr>                +#+  +:+       +#+        */
+/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 17:51:14 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/05/22 23:34:39 by simon            ###   ########.fr       */
+/*   Updated: 2024/06/03 21:05:50 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int
 	int	status;
 
 	if (waitpid(pid, &status, 0) == -1)
-		error_exit(0, NULL);
+		error_exit(errno, NULL);
 	while (wait(NULL) != -1)
 		;
 	if (WIFEXITED(status))
